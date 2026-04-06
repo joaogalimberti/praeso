@@ -1,0 +1,12 @@
+
+> appointment-reducer-frontend@1.0.0 build
+> tsc && vite build
+
+server/controllers/auth.controller.ts(5,1): error TS6133: 'sendReminderEmail' is declared but its value is never read.
+server/server.ts(28,21): error TS6133: 'req' is declared but its value is never read.
+server/server.ts(33,15): error TS6133: 'req' is declared but its value is never read.
+server/server.ts(46,20): error TS6133: 'req' is declared but its value is never read.
+server/server.ts(46,65): error TS6133: 'next' is declared but its value is never read.
+src/App.tsx(1,40): error TS6133: 'Navigate' is declared but its value is never read.
+src/pages/LandingPage/Login/Login.tsx(1,24): error TS2307: Cannot find module '@clerk/clerk-react' or its corresponding type declarations.
+src/store/useAppointmentsStore.ts(15,69): error TS6133: 'get' is declared but its value is never read.

@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import prisma from '../config/prisma';
-import { sendReminderEmail } from '../services/email.service';
 
 export async function register(req: Request, res: Response) {
   try {

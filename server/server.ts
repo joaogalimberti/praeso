@@ -25,12 +25,12 @@ app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 // Rota de health check
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 // Rota raiz
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.json({
     message: 'Appointment No-Show Reducer API',
     version: '1.0.0',
@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 });
 
 // Handler de erros
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Erro não tratado:', err);
   res.status(500).json({ error: 'Erro interno do servidor' });
 });

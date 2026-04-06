@@ -12,7 +12,7 @@ interface AppointmentsState {
   deleteAppointment: (id: string) => Promise<void>;
 }
 
-export const useAppointmentsStore = create<AppointmentsState>((set, get) => ({
+export const useAppointmentsStore = create<AppointmentsState>((set, _get) => ({
   appointments: [],
   loading: false,
 
