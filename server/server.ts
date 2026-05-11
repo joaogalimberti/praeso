@@ -53,7 +53,7 @@ app.get('/api', (_req, res) => {
 });
 
 // Todas as outras rotas servem o index.html (SPA)
-app.get('/:path*', (req, res) => {
+app.use((req, res) => {
   if (req.path.startsWith('/api')) return;
   res.sendFile(path.join(distPath, 'index.html'));
 });
