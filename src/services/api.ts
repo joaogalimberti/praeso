@@ -1,4 +1,3 @@
-/// <reference types="vite/client" />
 import axios from 'axios';
 import type { 
   Appointment, 
@@ -13,7 +12,7 @@ import type {
 const api = axios.create({
   // Em produção, como o backend serve o frontend, basta usar '/api'
   // Em desenvolvimento, o Vite pode fazer proxy ou usamos o localhost:3000
-  baseURL: (import.meta.env.VITE_API_URL as string) || '/api',
+  baseURL: ((import.meta as any).env.VITE_API_URL as string) || '/api',
   headers: {
     'Content-Type': 'application/json',
   },

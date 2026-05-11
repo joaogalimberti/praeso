@@ -31,10 +31,7 @@
     "react-router-dom": "^6.21.0",
     "zustand": "^4.4.7",
     "tsx": "^4.21.0",
-    "@prisma/client": "^5.15.0"
-  },
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
+    "@prisma/client": "^5.15.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
@@ -42,7 +39,10 @@
     "@types/node-cron": "^3.0.11",
     "@types/nodemailer": "^7.0.10",
     "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
+    "@types/react-dom": "^18.2.18"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.16",
     "concurrently": "^9.2.1",
