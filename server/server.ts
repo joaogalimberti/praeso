@@ -8,6 +8,7 @@ import appointmentsRoutes from './routes/appointments.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 import { startReminderJob } from './jobs/reminder.job';
 import { testEmailConnection } from './services/email.service';
+import prisma from './config/prisma';
 
 dotenv.config();
 
