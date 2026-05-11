@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: praeso-fullstack
+    env: node
+    plan: free
+    buildCommand: npm run build:full
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromConfigVar: DATABASE_URL
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://praeso.onrender.com

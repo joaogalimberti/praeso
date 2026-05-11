@@ -11,6 +11,15 @@ import { testEmailConnection } from './services/email.service';
 
 dotenv.config();
 
+// Validação de Variáveis de Ambiente Críticas
+const requiredEnv = ['DATABASE_URL', 'JWT_SECRET'];
+requiredEnv.forEach(env => {
+  if (!process.env[env]) {
+    console.error(`❌ ERRO: Variável de ambiente ${env} não configurada!`);
+    if (process.env.NODE_ENV === 'production') process.exit(1);
+  }
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -98,4 +107,19 @@ app.listen(PORT, async () => {
   console.log('   PUT    /api/appointments/:id');
   console.log('   PATCH  /api/appointments/:id/status');
   console.log('   DELETE /api/appointments/:id\n');
+});
+
+// Graceful Shutdown (Fechamento Limpo)
+process.on('SIGTERM', async () => {
+  console.log('SIGTERM recebido. Fechando servidor...');
+  const { default: prisma } = await import('./config/prisma');
+  await prisma.$disconnect();
+  process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+  console.log('SIGINT recebido. Fechando servidor...');
+  const { default: prisma } = await import('./config/prisma');
+  await prisma.$disconnect();
+  process.exit(0);
 });
