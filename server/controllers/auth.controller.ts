@@ -110,7 +110,8 @@ export async function login(req: Request, res: Response) {
     console.error('Erro no login:', error);
     res.status(500).json({ 
       error: 'Erro ao fazer login',
-      details: error instanceof Error ? error.message : 'Erro desconhecido'
+      details: error instanceof Error ? error.message : 'Erro desconhecido',
+      stack: error instanceof Error ? error.stack : undefined
     });
   }
 }

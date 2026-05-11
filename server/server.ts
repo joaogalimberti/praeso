@@ -23,12 +23,12 @@ requiredEnv.forEach(env => {
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middlewares
+// Middlewares (Ordem importa!)
+app.use(express.json());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || '*',
   credentials: true,
 }));
-app.use(express.json());
 
 // Rotas
 app.use('/api/auth', authRoutes);
