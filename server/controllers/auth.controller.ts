@@ -69,34 +69,47 @@ export async function register(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
+    console.log(`🔐 Tentativa de login para: ${email}`);
 
     if (!email || !password) {
       return res.status(400).json({ error: 'Email e senha são obrigatórios' });
     }
 
-    // Busca usuário
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    // 1. Busca usuário no banco
+    let user;
+    try {
+      user = await prisma.user.findUnique({ where: { email } });
+    } catch (dbError: any) {
+      console.error('❌ Erro de Banco no Login:', dbError);
+      return res.status(500).json({ 
+        error: 'Erro de conexão com o banco de dados',
+        details: dbError.message 
+      });
+    }
 
     if (!user) {
-      return res.status(401).json({ error: 'Email ou senha inválidos' });
+      return res.status(401).json({ error: 'Email não cadastrado' });
     }
 
-    // Verifica senha
+    // 2. Verifica senha
     const validPassword = await bcrypt.compare(password, user.password);
-
     if (!validPassword) {
-      return res.status(401).json({ error: 'Email ou senha inválidos' });
+      return res.status(401).json({ error: 'Senha incorreta' });
     }
 
-    // Gera token
+    // 3. Gera token
+    if (!process.env.JWT_SECRET) {
+      console.error('❌ JWT_SECRET não configurado no servidor!');
+      return res.status(500).json({ error: 'Erro de configuração no servidor (JWT_SECRET ausente)' });
+    }
+
     const token = jwt.sign(
       { userId: user.id, email: user.email },
-      process.env.JWT_SECRET!,
+      process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
 
+    console.log('✅ Login bem-sucedido!');
     res.json({
       user: {
         id: user.id,
@@ -106,12 +119,12 @@ export async function login(req: Request, res: Response) {
       },
       token,
     });
-  } catch (error) {
-    console.error('Erro no login:', error);
+  } catch (error: any) {
+    console.error('❌ Erro Crítico no Login:', error);
     res.status(500).json({ 
-      error: 'Erro ao fazer login',
-      details: error instanceof Error ? error.message : 'Erro desconhecido',
-      stack: error instanceof Error ? error.stack : undefined
+      error: 'Erro interno no servidor',
+      details: error.message,
+      stack: error.stack
     });
   }
 }

@@ -29,7 +29,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user, token, isAuthenticated: true, loading: false });
     } catch (error: any) {
       set({ loading: false });
-      throw new Error(error.response?.data?.error || 'Erro ao fazer login');
+      const message = error.response?.data?.details || error.response?.data?.error || 'Erro ao fazer login';
+      throw new Error(message);
     }
   },
 
@@ -43,7 +44,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ user, token, isAuthenticated: true, loading: false });
     } catch (error: any) {
       set({ loading: false });
-      throw new Error(error.response?.data?.error || 'Erro ao criar conta');
+      const message = error.response?.data?.details || error.response?.data?.error || 'Erro ao criar conta';
+      throw new Error(message);
     }
   },
 
