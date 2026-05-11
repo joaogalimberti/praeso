@@ -50,8 +50,8 @@ app.get('/api/test-db', async (_req, res) => {
     const userCount = await prisma.user.count();
     res.json({ success: true, userCount });
   } catch (error: any) {
-    res.status(500).json({ 
-      success: false, 
+    res.status(500).json({
+      success: false,
       error: error.message,
       stack: error.stack
     });
@@ -84,7 +84,7 @@ app.use((req, res) => {
 // Handler de erros
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Erro não tratado:', err);
-  res.status(500).json({ 
+  res.status(500).json({
     error: 'Erro interno do servidor',
     details: err.message,
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
