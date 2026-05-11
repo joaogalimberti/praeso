@@ -44,6 +44,19 @@ app.get('/health', (_req, res) => {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.get('/api/test-db', async (_req, res) => {
+  try {
+    const userCount = await prisma.user.count();
+    res.json({ success: true, userCount });
+  } catch (error: any) {
+    res.status(500).json({ 
+      success: false, 
+      error: error.message,
+      stack: error.stack
+    });
+  }
+});
+
 // Servir arquivos estáticos do Frontend (após o build)
 const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));
