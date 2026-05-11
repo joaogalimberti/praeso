@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import appointmentsRoutes from './routes/appointments.routes';
@@ -29,6 +30,10 @@ app.use('/api/dashboard', dashboardRoutes);
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+
+// Configuração para ESM (equivalente ao __dirname)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Servir arquivos estáticos do Frontend (após o build)
 const distPath = path.join(__dirname, '../dist');
