@@ -56,9 +56,13 @@ export async function register(req: Request, res: Response) {
       user,
       token,
     });
-  } catch (error) {
-    console.error('Erro no registro:', error);
-    res.status(500).json({ error: 'Erro ao criar conta' });
+  } catch (err: any) {
+    console.error('Erro não tratado:', err);
+    res.status(500).json({ 
+      error: 'Erro interno do servidor',
+      details: err.message,
+      stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   }
 }
 
@@ -104,7 +108,10 @@ export async function login(req: Request, res: Response) {
     });
   } catch (error) {
     console.error('Erro no login:', error);
-    res.status(500).json({ error: 'Erro ao fazer login' });
+    res.status(500).json({ 
+      error: 'Erro ao fazer login',
+      details: error instanceof Error ? error.message : 'Erro desconhecido'
+    });
   }
 }
 

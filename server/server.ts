@@ -70,7 +70,11 @@ app.use((req, res) => {
 // Handler de erros
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Erro não tratado:', err);
-  res.status(500).json({ error: 'Erro interno do servidor' });
+  res.status(500).json({ 
+    error: 'Erro interno do servidor',
+    details: err.message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
 });
 
 // Inicia servidor
