@@ -10,7 +10,9 @@ import type {
 } from '../types';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  // Em produção, como o backend serve o frontend, basta usar '/api'
+  // Em desenvolvimento, o Vite pode fazer proxy ou usamos o localhost:3000
+  baseURL: (import.meta.env.VITE_API_URL as string) || '/api',
   headers: {
     'Content-Type': 'application/json',
   },

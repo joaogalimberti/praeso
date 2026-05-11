@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.routes';
 import appointmentsRoutes from './routes/appointments.routes';
@@ -29,8 +30,12 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Rota raiz
-app.get('/', (_req, res) => {
+// Servir arquivos estáticos do Frontend (após o build)
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
+// Rota raiz e API
+app.get('/api', (_req, res) => {
   res.json({
     message: 'Appointment No-Show Reducer API',
     version: '1.0.0',
@@ -40,6 +45,12 @@ app.get('/', (_req, res) => {
       dashboard: '/api/dashboard',
     },
   });
+});
+
+// Todas as outras rotas servem o index.html (SPA)
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) return;
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 // Handler de erros
