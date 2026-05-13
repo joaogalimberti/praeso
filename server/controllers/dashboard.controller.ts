@@ -22,7 +22,7 @@ export async function getDashboardStats(req: Request, res: Response) {
       where: {
         userId,
         status: 'CONFIRMED',
-        date: { gte: now },
+        date: { gte: startOfDay },
         isDeleted: false,
       } as any,
     });
@@ -31,7 +31,7 @@ export async function getDashboardStats(req: Request, res: Response) {
     const missedCount = await prisma.appointment.count({
       where: {
         userId,
-        date: { lt: now },
+        date: { lt: startOfDay },
         status: { notIn: ['CONFIRMED', 'COMPLETED'] },
         isDeleted: false,
       } as any,
@@ -42,7 +42,7 @@ export async function getDashboardStats(req: Request, res: Response) {
       where: {
         userId,
         status: 'PENDING',
-        date: { gte: now },
+        date: { gte: startOfDay },
         isDeleted: false,
       } as any,
     });
@@ -59,16 +59,16 @@ export async function getDashboardStats(req: Request, res: Response) {
     // Taxa de confirmação: (confirmados / total do mês)
     const confirmationRate = totalCount > 0 ? (confirmedCount / totalCount) * 100 : 0;
 
-    // Próximos atendimentos (5 mais próximos)
+    // Próximos atendimentos (mais próximos)
     const upcomingAppointments = await prisma.appointment.findMany({
       where: {
         userId,
-        date: { gte: now },
+        date: { gte: startOfDay },
         status: { in: ['PENDING', 'CONFIRMED'] },
         isDeleted: false,
       } as any,
       orderBy: [{ date: 'asc' }, { time: 'asc' }],
-      take: 5,
+      take: 20,
     });
 
     // Atendimentos de hoje

@@ -61,23 +61,31 @@ export default function DashboardPage() {
   };
 
   const getFilteredAppointments = () => {
-    if (activeFilter === 'NONE' || activeFilter === 'TOTAL') return null;
+    if (activeFilter === 'NONE') return null;
 
     const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     return allAppointments.filter(apt => {
-      const aptDate = new Date(apt.date);
+      // Parse data sem deslocamento de fuso horário
+      const [year, month, day] = apt.date.split('T')[0].split('-').map(Number);
+      const aptDate = new Date(year, month - 1, day);
+      
+      // Combinar com a hora para comparação precisa se necessário
       const [hours, minutes] = apt.time.split(':');
-      aptDate.setHours(parseInt(hours), parseInt(minutes));
+      const aptDateTime = new Date(year, month - 1, day, parseInt(hours), parseInt(minutes));
 
+      if (activeFilter === 'TOTAL') {
+        return true;
+      }
       if (activeFilter === 'CONFIRMED') {
-        return apt.status === 'CONFIRMED' && aptDate >= now;
+        return apt.status === 'CONFIRMED' && aptDate >= startOfToday;
       }
       if (activeFilter === 'PENDING') {
-        return apt.status === 'PENDING' && aptDate >= now;
+        return apt.status === 'PENDING' && aptDate >= startOfToday;
       }
       if (activeFilter === 'MISSED') {
-        return aptDate < now && apt.status !== 'CONFIRMED' && apt.status !== 'COMPLETED';
+        return aptDate < startOfToday && apt.status !== 'CONFIRMED' && apt.status !== 'COMPLETED';
       }
       return true;
     });
@@ -211,24 +219,27 @@ export default function DashboardPage() {
         </div>
 
         {/* Dynamic List Selection */}
-        {activeFilter !== 'NONE' && activeFilter !== 'TOTAL' ? (
+        {activeFilter !== 'NONE' ? (
           <div className="mb-8 animate-fade-in bg-white border border-gray-100 p-4 rounded-2xl shadow-sm">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className={`w-1 h-12 rounded-full ${activeFilter === 'CONFIRMED' ? 'bg-green-500' :
                   activeFilter === 'PENDING' ? 'bg-amber-500' :
-                    'bg-red-500'
+                    activeFilter === 'TOTAL' ? 'bg-blue-500' :
+                      'bg-red-500'
                   }`}></div>
                 <div>
                   <h2 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-1">Visualização Ativa</h2>
                   <div className="flex items-center gap-2">
                     <span className={`px-3 py-1 rounded-lg text-xs font-bold ${activeFilter === 'CONFIRMED' ? 'bg-green-50 text-green-600' :
                       activeFilter === 'PENDING' ? 'bg-amber-50 text-amber-600' :
-                        'bg-red-50 text-red-600'
+                        activeFilter === 'TOTAL' ? 'bg-blue-50 text-blue-600' :
+                          'bg-red-50 text-red-600'
                       }`}>
                       {activeFilter === 'CONFIRMED' ? 'Confirmados' :
                         activeFilter === 'PENDING' ? 'Pendentes' :
-                          'Faltas'}
+                          activeFilter === 'TOTAL' ? 'Todos os Agendamentos' :
+                            'Faltas'}
                     </span>
                     <p className="text-sm font-bold text-gray-900">
                       Mostrando {filteredList?.length || 0} agendamentos encontrados
@@ -247,7 +258,7 @@ export default function DashboardPage() {
         ) : null}
 
         {/* Conditional Content Rendering */}
-        {activeFilter !== 'NONE' && activeFilter !== 'TOTAL' ? (
+        {activeFilter !== 'NONE' ? (
           <div className="mb-8 animate-fade-in">
             {filteredList && filteredList.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
