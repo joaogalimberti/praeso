@@ -10,7 +10,10 @@ import { startReminderJob } from './jobs/reminder.job';
 import { testEmailConnection } from './services/email.service';
 import prisma from './config/prisma';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 // Validação de Variáveis de Ambiente Críticas
 const requiredEnv = ['DATABASE_URL', 'JWT_SECRET'];
@@ -42,8 +45,7 @@ app.get('/health', (_req, res) => {
 });
 
 // Configuração para ESM (equivalente ao __dirname)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
 
 app.get('/api/test-db', async (_req, res) => {
   try {
