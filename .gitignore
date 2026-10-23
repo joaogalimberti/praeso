@@ -40,3 +40,7 @@ pnpm-debug.log*
 # Production
 /dist
 /build
+
+# Inspiration & Bolt
+inspiration/
+.bolt/

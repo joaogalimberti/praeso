@@ -1,50 +1,47 @@
-// Importação de todos os componentes modulares
-import Header from './Header/Header';
-import Hero from './Hero/Hero';
-import Problem from './Problem/Problem';
-import Stats from './Stats/Stats';
-import BeforeAfter from './BeforeAfter/BeforeAfter';
-import Features from './Features/Features';
-import HowItWorks from './HowItWorks/HowItWorks';
-import DashboardPreview from './DashboardPreview/DashboardPreview';
-import Automation from './Automation/Automation';
-import Testimonials from './Testimonials/Testimonials';
-import Footer from './Footer/Footer';
-
+import { Header } from './components/Header';
+import { Hero } from './components/Hero';
+import { Problem } from './components/Problem';
+import { InteractiveSimulator } from './components/InteractiveSimulator';
+import { RevenueCalculator } from './components/RevenueCalculator';
+import { Comparison } from './components/Comparison';
+import { HowItWorks } from './components/HowItWorks';
+import { Features } from './components/Features';
+import { FAQ } from './components/FAQ';
+import { FinalCTA } from './components/FinalCTA';
+import { Footer } from './components/Footer';
 
 const LandingPage = () => {
   return (
-    <div className="landing-page">
+    <div className="min-h-screen bg-paper-100 text-ink-950 font-sans selection:bg-moss-500/20 selection:text-ink-950">
       <Header />
-
       <main>
-        {/* Seção Principal */}
+        {/* 1. Hero com proposta de valor e impacto antes/depois */}
         <Hero />
 
-        {/* Seção de Conscientização */}
+        {/* 2. O Custo Invisível das Ausências */}
         <Problem />
 
-        {/* Seção de Prova Social e Dados */}
-        <Stats />
+        {/* 3. Simulador Interativo WhatsApp + Agenda em Tempo Real */}
+        <InteractiveSimulator />
 
-        {/* Comparativo de Valor */}
-        <BeforeAfter />
+        {/* 4. Calculadora Interativa de Faturamento Recuperado */}
+        <RevenueCalculator />
 
-        {/* Listagem de Funcionalidades */}
-        <Features />
+        {/* 5. Comparativo Direto: Gestão Reativa x PRAESO */}
+        <Comparison />
 
-        {/* Passo a Passo */}
+        {/* 6. Como Funciona em 4 Etapas */}
         <HowItWorks />
 
-        {/* Demonstração do Produto */}
-        <DashboardPreview />
-        <Automation />
+        {/* 7. Engenharia de Recursos */}
+        <Features />
 
-        {/* Prova Social (Depoimentos) */}
-        <Testimonials />
+        {/* 8. FAQ Interativo */}
+        <FAQ />
 
+        {/* 9. Chamada Final */}
+        <FinalCTA />
       </main>
-
       <Footer />
     </div>
   );
